@@ -7,9 +7,21 @@
 /* Shuffle - print out a series of randomly chosen songs. */
 /* Delete a song */
 /* Clear the library. */
-struct song_node * table[27];
 
-int main() {
-
-  return 0;
+//dont know if necessary
+struct song_node {
+  char name[100];
+  char artist[100];
+  struct song_node *next;
 }
+
+struct song_node *table[27];
+
+struct song_node *searchS(char *song, char *artist);
+struct song_node *searchA(char *artist);
+void print_letters(char letter);
+void print_songs(char *artist);
+void print_all();
+void print_shuffle();
+void delete(char *song);
+void clear();
