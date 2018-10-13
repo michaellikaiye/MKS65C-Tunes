@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
+#include<time.h>
 
 struct song_node { 
   char name[100];
@@ -18,7 +19,7 @@ void print_list(struct song_node *n) {
 
 /* print a node */
 void print_node(struct song_node *n) {
-  printf("%s: %s | ",n->artist,n->name);
+  printf("[%s: %s]\n",n->artist,n->name);
 }
 
 /* insert nodes at the front */
@@ -71,6 +72,7 @@ struct song_node *find_artist(char *artist, struct song_node *n) {
   return c;
 }
 
+/* compares how far apart they are in the list */
 int songcmp(char *nameA, char *artistA, char *nameB, char *artistB, struct song_node *n) {
   int a;
   int b;
@@ -87,21 +89,34 @@ int songcmp(char *nameA, char *artistA, char *nameB, char *artistB, struct song_
 }
 
 /* Return a pointer to random element in the list. */
-struct song_node *randomS(struct song_node *n) {
+struct song_node *random_node(struct song_node *n) {
+  struct song_node *s = malloc(sizeof(struct song_node));
+  s = n;
+  int size = 0;
+  while(s) {
+    s->next;
+    size++;
+  }
+  int move = (rand() % size);
+  while(move) {
+    n = n->next;
+    move--;
+  }
   return n;
 }
 
 /* remove a single specified node from the list */
-struct song_node *removeS(struct song_node *head, struct song_node *no) {
+struct song_node *remove_node(struct song_node *head, struct song_node *no) {
   return head;
 }
 
 /* free the entire list */
-struct song_node *clear(struct song_node *n) {
+struct song_node *clear_list(struct song_node *n) {
   return n;
 }
 
 int main() {
+  srand(time(NULL));
   printf("LINKED LIST TESTS\n");
   printf("====================================\n\n");
   
@@ -159,12 +174,14 @@ int main() {
  printf("%d", songcmp("even flow", "pearl jam", "time", "pink floyd", s0));
  printf("\n====================================\n");
 
-/* Testing random: */
-/* radiohead: paranoid android */
-/* radiohead: street spirit (fade out) */
-/* radiohead: street spirit (fade out) */
-/* radiohead: paranoid android */
-/* ==================================== */
+ printf("Testing random:\n");
+ struct song_node *s7 = random_node(s0);
+ print_node(s7);
+ s7 = random_node(s0);
+ print_node(s7);
+ s7 = random_node(s0);
+ print_node(s7);
+ printf("\n====================================\n\n");
 
 /* Testing remove: */
 /* Removing [pearl jam: alive] */
