@@ -2,12 +2,7 @@
 #include<string.h>
 #include<stdlib.h>
 #include<time.h>
-
-struct song_node { 
-  char name[100];
-  char artist[100];
-  struct song_node *next;
-};
+#include"list.h"
 
 /* print the entire list */
 void print_list(struct song_node *n) {
@@ -19,7 +14,8 @@ void print_list(struct song_node *n) {
 
 /* print a node */
 void print_node(struct song_node *n) {
-  printf("[%s: %s]\n",n->artist,n->name);
+  if(n != NULL)
+    printf("%s: %s\n",n->artist,n->name);
 }
 
 /* insert nodes at the front */
@@ -42,13 +38,12 @@ struct song_node *insert_order(char name[100], char artist[100], struct song_nod
     return p;
   }
 
-  struct song_node *c = malloc(sizeof(struct song_node));
-  c = n;
+  struct song_node *c = n;
   while(c->next != NULL && strcmp(p->artist, c->next->artist) > 0)
-      c = c->next;
+    c = c->next;
   if(strcmp(n->artist,p->artist))
     while(c->next != NULL && strcmp(p->name, c->next->name) > 0)
-	c = c->next;
+      c = c->next;
   p->next = c->next;
   c->next = p;
   return n;
@@ -56,20 +51,19 @@ struct song_node *insert_order(char name[100], char artist[100], struct song_nod
 
 /* find and return a pointer to a node based on artist and song name */
 struct song_node *find_node(char *name, char *artist, struct song_node *n) {
-  struct song_node *c = malloc(sizeof(struct song_node));
-  c = n;
-  while(c != NULL && strcmp(artist, c->artist) != 0 && strcmp(name, c->name) != 0)
-    c= c->next;
-  return c;
+  while(n != NULL) {
+    if(strcmp(artist, n->artist) == 0 && strcmp(name, n->name) == 0)
+      return n;
+    n = n->next;
+  }
+  return n;
 }
 
 /* find and return a pointer to the first song of an artist based on artist name */
 struct song_node *find_artist(char *artist, struct song_node *n) {
-  struct song_node *c = malloc(sizeof(struct song_node));
-  c = n;
-  while(c != NULL && strcmp(artist, c->artist) != 0)
-    c= c->next;
-  return c;
+  while(n != NULL && strcmp(artist, n->artist) != 0)
+    n= n->next;
+  return n;
 }
 
 /* compares how far apart they are in the list */
@@ -93,10 +87,11 @@ struct song_node *random_node(struct song_node *n) {
   struct song_node *s = malloc(sizeof(struct song_node));
   s = n;
   int size = 0;
-  while(s) {
-    s->next;
+  while(s != NULL) {
+    s = s->next;
     size++;
   }
+  free(s);
   int move = (rand() % size);
   while(move) {
     n = n->next;
@@ -106,100 +101,34 @@ struct song_node *random_node(struct song_node *n) {
 }
 
 /* remove a single specified node from the list */
-struct song_node *remove_node(struct song_node *head, struct song_node *no) {
-  return head;
-}
-
-/* free the entire list */
-struct song_node *clear_list(struct song_node *n) {
+struct song_node *remove_node(char *name, char *artist, struct song_node *n) {
+  if(strcmp(artist, n->artist) == 0 && strcmp(name, n->name) == 0) {
+    struct song_node *new = malloc(sizeof(struct song_node));
+    new = n->next;
+    free(n);
+    return new;
+  }
+  struct song_node *c = n;
+  while(c->next != NULL) {
+    if(strcmp(artist, c->next->artist) == 0 && strcmp(name, c->next->name) == 0) {
+      struct song_node *trash = c->next;
+      c->next = c->next->next;
+      free(trash);
+      return n;
+    }
+    c = c->next;
+  }
+  printf("%s: %s not found\n", artist, name);
   return n;
 }
 
-int main() {
-  srand(time(NULL));
-  printf("LINKED LIST TESTS\n");
-  printf("====================================\n\n");
-  
-  printf("Testing print_list:\n");
-  struct song_node *s0 = NULL;
-  s0 = insert_front("thunderstruck","ac/dc",s0);
-  s0 = insert_order("alive", "pearl jam", s0);
-  s0 = insert_order("even flow", "pearl jam", s0);
-  s0 = insert_order("yellow ledbetter", "pearl jam", s0);
-  s0 = insert_order("time", "pink floyd", s0);
-  s0 = insert_order("paranoid android", "radiohead", s0);
-  s0 = insert_order("street spirit (fade out)", "radiohead", s0);
-  print_list(s0);
-  printf("\n====================================\n\n");
-  
-  printf("Testing print_node:\n");
-  struct song_node *s1 = find_node("thuderstruck", "ac/dc", s0);
-  print_node(s1);
-  printf("\n====================================\n\n");
-
-  printf("Testing find_node:\n");
-  printf("looking for [pearl jam: even flow]\n");
-  printf("node found! ");
-  struct song_node *s2 = find_node("even flow", "pearl jam", s0);
-  print_node(s2);
-  printf("\nlooking for [pearl jam: daughter]\n");
-  printf("node not found\n");
-  struct song_node *s3 = find_node("daughter", "pearl jam", s0);
-  print_node(s3);
-  printf("\n====================================\n\n");
-
-  printf("Testing find_artist:\n");
-  printf("looking for [pink floyd]\n");
-  printf("artist found! ");
-  struct song_node *s4 = find_artist("pink floyd", s0);
-  print_list(s4);
-  printf("\nlooking for [pearl jam]\n");
-  printf("artist found! ");
-  struct song_node *s5 = find_artist("pearl jam", s0);
-  print_list(s5);
-  printf("\nlooking for [presidents of the united states of america]\n");
-  struct song_node *s6 = find_artist("presidents of the united states of america", s0);
-  printf("artist not found\n");
-  print_list(s6);
-  printf("====================================\n\n");
-
- printf("Testing songcmp (helper function):\n");
- printf("Comparing [pearl jam: even flow] to [pearl jam: even flow]\n");
- printf("%d", songcmp("even flow", "pearl jam", "even flow", "pearl jam", s0));
- printf("Comparing [pearl jam: even flow] to [pearl jam: alive]\n");
- printf("%d", songcmp("even flow", "pearl jam", "alive", "pearl jam", s0));
- printf("Comparing [pearl jam: alive] to [pearl jam: even flow]\n");
- printf("%d", songcmp("alive", "pearl jam", "even flow", "pearl jam", s0));
- printf("Comparing [pearl jam: even flow] to [pink floyd: time]\n");
- printf("%d", songcmp("even flow", "pearl jam", "time", "pink floyd", s0));
- printf("\n====================================\n");
-
- printf("Testing random:\n");
- struct song_node *s7 = random_node(s0);
- print_node(s7);
- s7 = random_node(s0);
- print_node(s7);
- s7 = random_node(s0);
- print_node(s7);
- printf("\n====================================\n\n");
-
-/* Testing remove: */
-/* Removing [pearl jam: alive] */
-/*  ac/dc: thunderstruck | pearl jam: even flow | pearl jam: yellow ledbetter | pink floyd: time | radiohead: paranoid android | radiohead: street spirit (fade out) |  */
-/* Removing [pearl jam: yellow ledbetter] */
-/*  ac/dc: thunderstruck | pearl jam: even flow | pink floyd: time | radiohead: paranoid android | radiohead: street spirit (fade out) |  */
-/* Removing [pink floyd: alive] */
-/*  pearl jam - alive not found */
-/* ac/dc: thunderstruck | pearl jam: even flow | pink floyd: time | radiohead: paranoid android | radiohead: street spirit (fade out) |  */
-/* ==================================== */
-
-/* Testing free_list */
-/* freeing node: ac/dc - thunderstruck */
-/* freeing node: pearl jam - even flow */
-/* freeing node: pink floyd - time */
-/* freeing node: radiohead - paranoid android */
-/* freeing node: radiohead - street spirit (fade out) */
-/* list after free_list: */
-  
-  return 0;
+/* free the entire list */
+struct song_node *free_list(struct song_node *n) {
+  struct song_node *temp;
+  while(n) {
+    temp = n;
+    n = n->next;
+    free(temp);
+  }
+  return n;
 }
