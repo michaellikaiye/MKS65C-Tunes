@@ -1,6 +1,8 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
+#include<time.h>
+#include"list.h"
 #include"library.h"
 struct song_node *searchS(char *song, char *artist) {
 }
