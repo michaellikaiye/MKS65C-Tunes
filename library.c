@@ -27,34 +27,51 @@ struct song_node *searchA(char *artist) {
 }
 
 
+//EDIT
 //print all artists starting with a letter as well as their corresponding song
 void print_letters(char letter) {
   struct song_node * temp = * table;
-  
+
   
   return print_list(temp);
 }
 
+//prints all the songs by an author
 void print_songs(char *artist) {
-  return print_list (searchA(artist, temp) );
+  return print_list(searchA(artist));
 }
 
-//print all items in the table
+//print all items in  table
 void print_all() {
   return print_node(table);
+  struct song_node * temp = * table;
+  while (temp != NULL){
+    print_list(temp);
+    temp  = temp -> next;
+  }
 }
 
+//EDIT
 //prints the elements starting from a random pointer
 void print_shuffle() {
   return print_list( random_node (table) );
 }
 
+//EDIT
 //deletes a song from the table
 void delete(char *song) {
-  return remove_node(song, table);
+  struct song_node * temp = * table;
+
+  while (temp != NULL && !strcmp(temp.name,song) ){
+    temp  = temp -> next;
+  }  
+  remove_node(song, temp);
 }
 
 //clears the entire table
 void clear() {
-  free_list(table);
+  while (table != NULL){
+    free_list(table);
+    table  = table -> next;
+  }
 }
