@@ -7,7 +7,7 @@
 
 // returns pointer to a song by a certain artist
 struct song_node *searchS(char *song, char *artist) {
-  struct song_node * temp = * table;
+  struct song_node * temp = *table;
   printf("Searching for song %s by artist %s:\n", song, artist);
   while (temp != NULL && find_node(song, artist, temp) == NULL){
     temp  = temp -> next;
@@ -18,7 +18,7 @@ struct song_node *searchS(char *song, char *artist) {
 
 // returns pointer to a certain artist
 struct song_node *searchA(char *artist) {
-  struct song_node * temp = * table;
+  struct song_node * temp = *table;
   printf("Searching for artist %s:\n", artist);
   while (temp != NULL && find_artist(artist, temp) == NULL){
     temp  = temp -> next;
@@ -30,7 +30,7 @@ struct song_node *searchA(char *artist) {
 //EDIT
 //print all artists starting with a letter as well as their corresponding song
 void print_letters(char letter) {
-  struct song_node * temp = * table;
+  struct song_node * temp = *table;
 
   
   return print_list(temp);
@@ -43,12 +43,12 @@ void print_songs(char *artist) {
 
 //print all items in  table
 void print_all() {
-  return print_node(table);
-  struct song_node * temp = * table;
+  struct song_node * temp = *table;
   while (temp != NULL){
     print_list(temp);
     temp  = temp -> next;
   }
+
 }
 
 //EDIT
@@ -60,7 +60,7 @@ void print_shuffle() {
 //EDIT
 //deletes a song from the table
 void delete(char *song) {
-  struct song_node * temp = * table;
+  struct song_node * temp = *table;
 
   while (temp != NULL && !strcmp(temp.name,song) ){
     temp  = temp -> next;
@@ -70,8 +70,9 @@ void delete(char *song) {
 
 //clears the entire table
 void clear() {
+  struct song_node * temp = *table;
   while (table != NULL){
-    free_list(table);
-    table  = table -> next;
+    free_list(*table);
+    *table = temp -> next;
   }
 }
