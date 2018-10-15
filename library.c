@@ -43,6 +43,7 @@ void print_songs(char *artist) {
 
 //print all items in  table
 void print_all() {
+  // *(table +i) 
   struct song_node * temp = *table;
   while (temp != NULL){
     print_list(temp);

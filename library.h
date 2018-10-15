@@ -8,7 +8,7 @@
 struct song_node *table[27];
 
 /* Add song nodes. */
-struct song_node *add(struct song_node n);
+void *add(struct song_node n);
 
 /* Search for a song given song and artist name (return a pointer). */
 struct song_node *searchS(char *song, char *artist);
