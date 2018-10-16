@@ -2,18 +2,31 @@
 #include<string.h>
 #include<stdlib.h>
 #include<time.h>
-#include"list.h"
+#include"list.c"
+
 
 struct song_node *table[27];
 
+void setup(){
+  int i = 0;
+  while (i < 27){
+    table[i] = NULL;
+    i++;
+  }
+}
 
-void *add(char *song, char *artist) {
+void add(char *song, char *artist) {
   char arr[100];
   strcpy(arr, artist);
-  char Letter = arr[0];
-  int comp = 3; // actual value of a
-  int i = (int Letter) - comp;
-  table[i] = insert_order(song, artist, table[i]);
+  char letter = arr[0];
+  int comp = 97; // actual ascii value of a
+  int i = (int) letter - comp;
+  if (i < 27){
+    insert_order(song, artist, table[i]);
+  }
+  else{
+    insert_order(song, artist, table[26]);
+  }
 }
 
 /* // returns pointer to a song by a certain artist */
@@ -52,15 +65,12 @@ void *add(char *song, char *artist) {
 /*   return print_list(searchA(artist)); */
 /* } */
 
-/* //print all items in  table */
-/* void print_all() { */
-/*   struct song_node * temp = *table; */
-/*   while (temp != NULL){ */
-/*     print_list(temp); */
-/*     temp  = temp -> next; */
-/*   } */
-
-/* } */
+//print all items in  table
+void print_all() {
+  while ((*table)++ ){
+    print_list(*table);
+  }
+}
 
 /* EDIT */
 /* prints the elements starting from a random pointer */
@@ -92,26 +102,28 @@ int main() {
 
   printf("MUSIC LIBRARY TESTS\n");
 
+  setup();
+  
   printf("====================================\n\n");
-  //make function to null all of table beginning struct song_nodes
+
   add("thunderstruck","ac/dc");
   add("alive", "pearl jam");
-  s0 = insert_order("even flow", "pearl jam", s0);
-  s0 = insert_order("yellow ledbetter", "pearl jam", s0);
-  s0 = insert_order("time", "pink floyd", s0);
-  s0 = insert_order("paranoid android", "radiohead", s0);
-  s0 = insert_order("street spirit (fade out)", "radiohead", s0);
-  print_list(s0);
+  add("even flow", "pearl jam");
+  add("yellow ledbetter", "pearl jam");
+  add("time", "pink floyd");
+  add("paranoid android", "radiohead");
+  add("street spirit (fade out)", "radiohead");
+  print_all();
 
  
-  printf("Testing print_library\n");
-  printf("a list\n");
-  printf(" ac/dc: thunderstruck |\n");
-  printf("p list\n");
-  printf("pearl jam: alive | pearl jam: even flow | pearl jam: yellow ledbetter | pink floyd: time | presidents of the united states of america: peaches |\n");
-  printf("r list\n");
-  printf(" radiohead: paranoid android | radiohead: street spirit (fade out) |\n");
-  printf("====================================\n");
+  /* printf("Testing print_library\n"); */
+  /* printf("a list\n"); */
+  /* printf(" ac/dc: thunderstruck |\n"); */
+  /* printf("p list\n"); */
+  /* printf("pearl jam: alive | pearl jam: even flow | pearl jam: yellow ledbetter | pink floyd: time | presidents of the united states of america: peaches |\n"); */
+  /* printf("r list\n"); */
+  /* printf(" radiohead: paranoid android | radiohead: street spirit (fade out) |\n"); */
+  /* printf("====================================\n"); */
 
 /* Testing print_letter */
 /* p list */
