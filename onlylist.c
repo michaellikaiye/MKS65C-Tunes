@@ -89,8 +89,7 @@ int songcmp(char *nameA, char *artistA, char *nameB, char *artistB, struct song_
 
 /* Return a pointer to random element in the list. */
 struct song_node *random_node(struct song_node *n) {
-  struct song_node *s = malloc(sizeof(struct song_node));
-  s = n;
+  struct song_node *s = n;
   int size = 0;
   while(s != NULL) {
     s = s->next;

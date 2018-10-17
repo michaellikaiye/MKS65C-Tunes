@@ -89,8 +89,7 @@ int songcmp(char *nameA, char *artistA, char *nameB, char *artistB, struct song_
 
 /* Return a pointer to random element in the list. */
 struct song_node *random_node(struct song_node *n) {
-  struct song_node *s = malloc(sizeof(struct song_node));
-  s = n;
+  struct song_node *s = n;
   int size = 0;
   while(s != NULL) {
     s = s->next;
@@ -149,28 +148,21 @@ void setup() {
   }
 }
 
-void add(char *song, char *artist) {
-  char arr[100];
-  strcpy(arr, artist);
-  char letter = arr[0];
-  int comp = 97; // actual ascii value of a
-  int i = ((int) letter) - comp;
-  if (i < 27){
-    insert_order(song, artist,table[i]);
-  }
-  else{
+void add(char song[100], char artist[100]) {
+  char letter = artist[0];
+  int i = (int) (letter - 'a');
+  if (i < 27)
+    insert_order(song, artist, table[i]);
+  else
     insert_order(song, artist, table[26]);
-  }
 }
 
 
 
 // returns pointer to a song by a certain artist
-struct song_node *searchS(char *song, char *artist) {
-  char arr[100];
-  strcpy(arr, artist);
-  char letter = arr[0];
-  int i = letter - 97;
+struct song_node *searchS(char song[100], char artist[100]) {
+  char letter = artist[0];
+  int i = (int)(letter - 'a');
 
   printf("looking for [%s: %s]\n", artist, song);
 
@@ -188,11 +180,9 @@ struct song_node *searchS(char *song, char *artist) {
 
 
 // returns pointer to a certain artist
-struct song_node *searchA(char *artist) {
-  char arr[100];
-  strcpy(arr, artist);
-  char letter = arr[0];
-  int i = letter - 97;
+struct song_node *searchA(char artist[100]) {
+  char letter = artist[0];
+  int i = (int)(letter - 'a');
   
   printf("looking for [%s]\n", artist);
 
@@ -210,8 +200,8 @@ struct song_node *searchA(char *artist) {
 
 
 //print all artists starting with a letter as well as their corresponding song
-void print_letters(char *letter) {
-  int i = *letter - 97;
+void print_letters(char letter) {
+  int i = (int)(letter - 'a');
   if (i < 27){
     print_list(table[i]);
   }
@@ -220,10 +210,18 @@ void print_letters(char *letter) {
   }
 }
 
-/* //prints all the songs by an author */
-/* void print_songs(char *artist) { */
-/*   return print_list(searchA(artist)); */
-/* } */
+//prints all the songs by an author
+void print_songs(char artist[100]) {
+  char letter = artist[0];
+  int i = (int)(letter - 'a');
+  struct song_node *n = table[i];
+  while(n != NULL && strcmp(artist, n->artist) != 0)
+    n = n->next;
+  while(n != NULL && strcmp(artist, n->artist) == 0) {
+    printf("%s: %s\n",n->artist,n->name);
+    n = n->next;
+  }
+}
 
 
 
@@ -231,11 +229,32 @@ void print_letters(char *letter) {
 void print_all() {
   int i = 0;
   while (i <= 26) {
-    print_list(table[i]);
+    if(table[i] != NULL)
+      print_list(table[i]);
     i++;
   }
 }
 
+// YOU DO THIS :/
+void print_shuffle() {
+  //random letter for random number of times
+  // take those letters call random_node
+  // print that node one at a time
+
+}
+void remove_song(char song[100], char artist[100]) {
+  char letter = artist[0];
+  int i = (int)(letter - 'a');
+  remove_node(song, artist, table[i]);
+}
+void clear_library() {
+  int i = 0;
+  for(i; i < 27; i++) {
+    struct song_node *temp;
+    table[i] = free_list(table[i]);
+    //printf("%p", table[i]);
+  }
+}
 int main() {
 
   printf("MUSIC LIBRARY TESTS\n");
@@ -259,8 +278,9 @@ int main() {
 
   printf("Testing print_letter\n");
   printf("p list\n");
-  print_letters("p");
- 
+  print_letters('p');
+  printf("testing print_songs");
+  print_songs("pearl jam");
   printf("====================================\n\n");
 
   printf("Testing find:\n");
@@ -280,6 +300,13 @@ int main() {
    searchA("bob dylan");
    printf("====================================\n\n");
 
+   remove_song("alive","pearl jam");
+   print_all();
+   remove_song("thunderstruck","ac/dc");
+   print_all();
+   printf("Testing clear_library\n");
+   clear_library();
+   print_all();
 /* Testing remove_song */
 /* removing: [pearl jam: alive] */
 /* a list */
