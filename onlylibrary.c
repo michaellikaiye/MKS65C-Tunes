@@ -235,13 +235,23 @@ void print_all() {
   }
 }
 
-// YOU DO THIS :/
 void print_shuffle() {
-  //random letter for random number of times
-  // take those letters call random_node
-  // print that node one at a time
 
+  int no = rand() %60;
+  while(no != 0) {
+    int le = rand() %27;
+    while(table[le]->artist == NULL) {
+      print_list(table[le]);
+      le = rand() %27;
+    }
+    printf("%d",le);
+    struct song_node *n = table[le];
+    n = random_node(n);
+    print_node(n);
+    no--;
+  }
 }
+
 void remove_song(char song[100], char artist[100]) {
   char letter = artist[0];
   int i = (int)(letter - 'a');
@@ -256,7 +266,7 @@ void clear_library() {
   }
 }
 int main() {
-
+  srand(time(NULL));
   printf("MUSIC LIBRARY TESTS\n");
   setup();
 
@@ -304,7 +314,8 @@ int main() {
    print_all();
    remove_song("thunderstruck","ac/dc");
    print_all();
-   printf("Testing clear_library\n");
+   printf("Testing shuffle\n");
+   print_shuffle();
    clear_library();
    print_all();
 /* Testing remove_song */
@@ -360,52 +371,3 @@ int main() {
 /* ==================================== */
   
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//add very later
-/* EDIT */
-/* prints the elements starting from a random pointer */
-/* void print_shuffle() { */
-/*   return print_list( random_node (table) ); */
-/* } */
-
-/* EDIT */
-/* deletes a song from the table */
-/* void delete(char *song) { */
-/*   struct song_node * temp = *table; */
-
-/*   while (temp != NULL && !strcmp(temp.name,song) ){ */
-/*     temp  = temp -> next; */
-/*   }   */
-/*   remove_node(song, temp); */
-/* } */
-
-/* clears the entire table */
-/* void clear() { */
-/*   struct song_node * temp = *table; */
-/*   while (table != NULL){ */
-/*     free_list(*table); */
-/*     *table = temp -> next; */
-/*   } */
-/* } */
-
