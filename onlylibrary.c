@@ -11,8 +11,8 @@ struct song_node {
 
 /* print the entire list */
 void print_list(struct song_node *n) {
-  while(n) {
-    printf("%s: %s | ",n->artist,n->name);
+  while(n->next) {
+    printf("%s: %s | \n",n->next->artist,n->next->name);
     n = n->next;
   }
 }
@@ -140,10 +140,11 @@ struct song_node *free_list(struct song_node *n) {
 
 
 struct song_node *table[27];
+
 void setup() {
   int i = 0;
   while(i != 27) {
-    table[i] = NULL;
+    table[i] = malloc(sizeof(struct song_node));
     i++;
   }
 }
@@ -152,143 +153,132 @@ void add(char *song, char *artist) {
   char arr[100];
   strcpy(arr, artist);
   char letter = arr[0];
-  printf("%c", letter);
   int comp = 97; // actual ascii value of a
   int i = ((int) letter) - comp;
   if (i < 27){
-    struct song_node* n = malloc(sizeof(struct song_node));
-      n = table[7];
-    insert_order(song, artist,n);
-    print_list(n);
+    insert_order(song, artist,table[i]);
   }
   else{
     insert_order(song, artist, table[26]);
   }
 }
 
-/* // returns pointer to a song by a certain artist */
-/* struct song_node *searchS(char *song, char *artist) { */
-/*   struct song_node * temp = *table; */
-/*   printf("Searching for song %s by artist %s:\n", song, artist); */
-/*   while (temp != NULL && find_node(song, artist, temp) == NULL){ */
-/*     temp  = temp -> next; */
-/*   } */
-/*   return find_node(song, artist, temp); */
-/* } */
 
 
-/* // returns pointer to a certain artist */
-/* struct song_node *searchA(char *artist) { */
-/*   struct song_node * temp = *table; */
-/*   printf("Searching for artist %s:\n", artist); */
-/*   while (temp != NULL && find_artist(artist, temp) == NULL){ */
-/*     temp  = temp -> next; */
-/*   } */
-/*   return find_artist(artist, temp); */
-/* } */
+// returns pointer to a song by a certain artist
+struct song_node *searchS(char *song, char *artist) {
+  char arr[100];
+  strcpy(arr, artist);
+  char letter = arr[0];
+  int i = letter - 97;
+
+  printf("looking for [%s: %s]\n", artist, song);
+
+  if (find_node(song, artist, table[i]) != NULL){
+    printf("song found! %s: %s\n", artist, song);
+  }
+  else{
+    printf("song not found!\n");
+  }
+
+  return find_node(song, artist, table[i]);
+}
 
 
-/* //EDIT */
-/* //print all artists starting with a letter as well as their corresponding song */
-/* void print_letters(char letter) { */
-/*   struct song_node * temp = *table; */
 
+
+// returns pointer to a certain artist
+struct song_node *searchA(char *artist) {
+  char arr[100];
+  strcpy(arr, artist);
+  char letter = arr[0];
+  int i = letter - 97;
   
-/*   return print_list(temp); */
-/* } */
+  printf("looking for [%s]\n", artist);
+
+  if (find_artist(artist, table[i]) != NULL){
+    printf("artist found! \n");
+    
+  }
+  else{
+    printf("artist not found!\n");
+  }
+  return find_artist(artist, table[i]);
+}
+
+
+
+
+//print all artists starting with a letter as well as their corresponding song
+void print_letters(char *letter) {
+  int i = *letter - 97;
+  if (i < 27){
+    print_list(table[i]);
+  }
+  else{
+    print_list(table[26]);
+  }
+}
 
 /* //prints all the songs by an author */
 /* void print_songs(char *artist) { */
 /*   return print_list(searchA(artist)); */
 /* } */
 
+
+
 /* print all items in  table */
 void print_all() {
   int i = 0;
-  while (i != 26) {
-    printf("%d", i);
-    struct song_node* n = table[i];
-    if (n)
-      printf("nasty");
-    else {
-    printf("%s: %s | ",n->artist,n->name);
-    }
-    printf("\n");
+  while (i <= 26) {
+    print_list(table[i]);
     i++;
   }
 }
-
-/* EDIT */
-/* prints the elements starting from a random pointer */
-/* void print_shuffle() { */
-/*   return print_list( random_node (table) ); */
-/* } */
-
-/* EDIT */
-/* deletes a song from the table */
-/* void delete(char *song) { */
-/*   struct song_node * temp = *table; */
-
-/*   while (temp != NULL && !strcmp(temp.name,song) ){ */
-/*     temp  = temp -> next; */
-/*   }   */
-/*   remove_node(song, temp); */
-/* } */
-
-/* clears the entire table */
-/* void clear() { */
-/*   struct song_node * temp = *table; */
-/*   while (table != NULL){ */
-/*     free_list(*table); */
-/*     *table = temp -> next; */
-/*   } */
-/* } */
 
 int main() {
 
   printf("MUSIC LIBRARY TESTS\n");
   setup();
+
+  printf("====================================\n\n");
+  
+  add("thunderstruck","ac/dc"); 
+  add("alive", "pearl jam");
+  add("even flow", "pearl jam");
+  add("yellow ledbetter", "pearl jam");
+  add("time", "pink floyd");
+  add("paranoid android", "radiohead");
+  add("street spirit (fade out)", "radiohead");
+
+  printf("Testing print_library\n");
+
+  print_all();
  
   printf("====================================\n\n");
 
-   add("thunderstruck","ac/dc"); 
-  /* add("alive", "pearl jam"); */
-  /* add("even flow", "pearl jam"); */
-  /* add("yellow ledbetter", "pearl jam"); */
-  /* add("time", "pink floyd"); */
-  /* add("paranoid android", "radiohead"); */
-  /* add("street spirit (fade out)", "radiohead"); */
-   print_all();
+  printf("Testing print_letter\n");
+  printf("p list\n");
+  print_letters("p");
  
-  /* printf("Testing print_library\n"); */
-  /* printf("a list\n"); */
-  /* printf(" ac/dc: thunderstruck |\n"); */
-  /* printf("p list\n"); */
-  /* printf("pearl jam: alive | pearl jam: even flow | pearl jam: yellow ledbetter | pink floyd: time | presidents of the united states of america: peaches |\n"); */
-  /* printf("r list\n"); */
-  /* printf(" radiohead: paranoid android | radiohead: street spirit (fade out) |\n"); */
-  /* printf("====================================\n"); */
+  printf("====================================\n\n");
 
-/* Testing print_letter */
-/* p list */
-/*  pearl jam: alive | pearl jam: even flow | pearl jam: yellow ledbetter | pink floyd: time | presidents of the united states of america: peaches |  */
-/* ==================================== */
+  printf("Testing find:\n");
+  searchS("alive","pearl jam");
+  searchS("dead","pearl jam");
+  printf("====================================\n\n");
 
-/* Testing find: */
-/* looking for [pearl jam: alive] */
-/*  song found! pearl jam: alive */
-/* looking for [pearl jam: time] */
-/*  song not found */
-/* ==================================== */
-
-/* Testing find artist: */
+  printf("Testing find artist:");
 /* looking for [pearl jam] */
-/*  artist found! pearl jam: alive | pearl jam: even flow | pearl jam: yellow ledbetter | pink floyd: time | presidents of the united states of america: peaches |  */
+/*  artist found! pearl jam: alive | pearl jam: even flow | pearl jam: yellow ledbetter | pink floyd: time | presidents of the united states of america: peaches | */
 /* looking for [pink floyd] */
-/*  artist found! pink floyd: time | presidents of the united states of america: peaches |  */
+/*  artist found! pink floyd: time | presidents of the united states of america: peaches | */
 /* looking for [bob dylan] */
 /*  artist not found */
-/* ==================================== */
+   searchA("pearl jam");
+   searchA("pink floyd");
+   searchA("bob dylan");
+   printf("====================================\n\n");
 
 /* Testing remove_song */
 /* removing: [pearl jam: alive] */
@@ -343,3 +333,52 @@ int main() {
 /* ==================================== */
   
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//add very later
+/* EDIT */
+/* prints the elements starting from a random pointer */
+/* void print_shuffle() { */
+/*   return print_list( random_node (table) ); */
+/* } */
+
+/* EDIT */
+/* deletes a song from the table */
+/* void delete(char *song) { */
+/*   struct song_node * temp = *table; */
+
+/*   while (temp != NULL && !strcmp(temp.name,song) ){ */
+/*     temp  = temp -> next; */
+/*   }   */
+/*   remove_node(song, temp); */
+/* } */
+
+/* clears the entire table */
+/* void clear() { */
+/*   struct song_node * temp = *table; */
+/*   while (table != NULL){ */
+/*     free_list(*table); */
+/*     *table = temp -> next; */
+/*   } */
+/* } */
+
