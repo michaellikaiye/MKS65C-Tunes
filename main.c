@@ -2,8 +2,17 @@
 #include<string.h>
 #include<stdlib.h>
 #include<time.h>
-#include"library.h"
-#include"list.h"
+
+#ifndef "library.h"
+#define "library.h"
+#endif
+
+
+#ifndef "list.h"
+#define "list.h"
+#endif
+
+
 
 int main() {
   srand(time(NULL));
@@ -101,5 +110,85 @@ int main() {
   print_list(s0);
   printf("\npointer of list: %p\n", s0);
 
+
+   printf("MUSIC LIBRARY TESTS\n");
+
+  printf("====================================\n\n");
+  
+  add("thunderstruck","ac/dc"); 
+  add("alive", "pearl jam");
+  add("even flow", "pearl jam");
+  add("yellow ledbetter", "pearl jam");
+  add("time", "pink floyd");
+  add("paranoid android", "radiohead");
+  add("street spirit (fade out)", "radiohead");
+  add("peaches", "president of the united states of america");
+
+  printf("Testing print_library\n");
+
+  print_all();
+ 
+  printf("====================================\n\n");
+
+  printf("Testing print_letter\n");
+  printf("p list\n");
+  print_letters('p');
+  printf("testing print_songs");
+  print_songs("pearl jam");
+  printf("====================================\n\n");
+
+  printf("Testing find:\n");
+  searchS("alive","pearl jam");
+  searchS("dead","pearl jam");
+  printf("====================================\n\n");
+
+  printf("Testing find artist:\n");
+
+  searchA("pearl jam");
+  searchA("pink floyd");
+  searchA("bob dylan");
+  printf("====================================\n\n");
+
+  printf("Testing remove:\n");
+
+  remove_song("alive","pearl jam");
+  print_all();
+  remove_song("time","pink floyd");
+  print_all();
+  printf("====================================\n\n");
+
+   
+  printf("Testing shuffle:\n");
+  print_shuffle();
+  printf("====================================\n\n");
+
+  printf("Testing clear_library:\n");
+
+  clear_library();
+  print_all();
+
+  printf("====================================\n\n");
+
+  printf("Adding songs to empty library");
+  add("alive", "pearl jam");
+  add("time", "pink floyd");
+  add("even flow", "pearl jam");
+  add("yellow ledbetter", "pearl jam");
+  add("time", "pink floyd");
+  print_all();
+
+  printf("====================================\n\n");
+
+  printf("Testing print_artist:\n");
+  searchA("pearl jam");
+  searchA("ac/dc");
+
+  printf("====================================\n\n");
+
+  printf("Testing shuffle\n");
+  print_shuffle();
+
+  printf("====================================\n\n");
+  
   return 0;
 }

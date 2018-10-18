@@ -1,10 +1,3 @@
-/* dont know if necessary */
-/* struct song_node { */
-/*   char name[100]; */
-/*   char artist[100]; */
-/*   struct song_node *next; */
-/* } song_node; */
-
 struct song_node *table[27];
 
 /* Sets up table with null values */
