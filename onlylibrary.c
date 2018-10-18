@@ -231,8 +231,7 @@ void clear_library() {
 }
 int main() {
   srand(time(NULL));
-  printf("MUSIC LIBRARY TESTS\n");
-  setup();
+ printf("MUSIC LIBRARY TESTS\n");
    printf("====================================\n\n");
   
   add("thunderstruck","ac/dc"); 
@@ -242,6 +241,7 @@ int main() {
   add("time", "pink floyd");
   add("paranoid android", "radiohead");
   add("street spirit (fade out)", "radiohead");
+  add("peaches", "president of the united states of america");
    printf("Testing print_library\n");
    print_all();
  
@@ -256,68 +256,38 @@ int main() {
   searchS("alive","pearl jam");
   searchS("dead","pearl jam");
   printf("====================================\n\n");
-   printf("Testing find artist:");
-/* looking for [pearl jam] */
-/*  artist found! pearl jam: alive | pearl jam: even flow | pearl jam: yellow ledbetter | pink floyd: time | presidents of the united states of america: peaches | */
-/* looking for [pink floyd] */
-/*  artist found! pink floyd: time | presidents of the united states of america: peaches | */
-/* looking for [bob dylan] */
-/*  artist not found */
+   printf("Testing find artist:\n");
    searchA("pearl jam");
-   searchA("pink floyd");
-   searchA("bob dylan");
-   printf("====================================\n\n");
-    remove_song("alive","pearl jam");
-   print_all();
-   remove_song("thunderstruck","ac/dc");
-   print_all();
-   printf("Testing shuffle\n");
-   print_shuffle();
+  searchA("pink floyd");
+  searchA("bob dylan");
+  printf("====================================\n\n");
+   printf("Testing remove:\n");
+   remove_song("alive","pearl jam");
+  print_all();
+  remove_song("time","pink floyd");
+  print_all();
+  printf("====================================\n\n");
+    
+  printf("Testing shuffle:\n");
+  print_shuffle();
+  printf("====================================\n\n");
+   printf("Testing clear_library:\n");
    clear_library();
-   print_all();
-/* Testing remove_song */
-/* removing: [pearl jam: alive] */
-/* a list */
-/*  ac/dc: thunderstruck |  */
-/* p list */
-/*  pearl jam: even flow | pearl jam: yellow ledbetter | pink floyd: time | presidents of the united states of america: peaches |  */
-/* r list */
-/*  radiohead: paranoid android | radiohead: street spirit (fade out) |  */
- /* removing: [pearl jam: yellow ledbetter] */
-/* a list */
-/*  ac/dc: thunderstruck |  */
-/* p list */
-/*  pearl jam: even flow | pink floyd: time | presidents of the united states of america: peaches |  */
-/* r list */
-/*  radiohead: paranoid android | radiohead: street spirit (fade out) |  */
-/* ==================================== */
- /* Testing clear_library: */
-/* freeing node: ac/dc - thunderstruck */
-/* freeing node: pearl jam - even flow */
-/* freeing node: pink floyd - time */
-/* freeing node: presidents of the united states of america - peaches */
-/* freeing node: radiohead - paranoid android */
-/* freeing node: radiohead - street spirit (fade out) */
- /* Library after clear: */
-/* ==================================== */
- /* Adding songs to empty library */
-/* a list */
-/*  ac/dc: thunderstruck |  */
-/* p list */
-/*  pearl jam: alive | pearl jam: even flow | pearl jam: yellow ledbetter | pink floyd: time |  */
-/* ==================================== */
- /* Testing print_artist: */
-/* Printing [pearl jam] */
-/* [pearl jam: alive] */
-/* [pearl jam: even flow] */
-/* [pearl jam: yellow ledbetter] */
- /* Printing [ac/dc] */
-/* [ac/dc: thunderstruck] */
-/* ==================================== */
- /* Testing shuffle */
-/* ac/dc: thunderstruck */
-/* ac/dc: thunderstruck */
-/* pearl jam: yellow ledbetter */
-/* ==================================== */
-  
+  print_all();
+   printf("====================================\n\n");
+   printf("Adding songs to empty library");
+  add("alive", "pearl jam");
+  add("time", "pink floyd");
+  add("even flow", "pearl jam");
+  add("yellow ledbetter", "pearl jam");
+  add("time", "pink floyd");
+  print_all();
+   printf("====================================\n\n");
+   printf("Testing print_artist:\n");
+  searchA("pearl jam");
+  searchA("ac/dc");
+   printf("====================================\n\n");
+   printf("Testing shuffle\n");
+  print_shuffle();
+   printf("====================================\n\n");
 }
