@@ -3,25 +3,27 @@
 #include<stdlib.h>
 #include<time.h>
 
- struct song_node {
+struct song_node {
   char name[100];
   char artist[100];
   struct song_node *next;
 };
 
- /* print the entire list */
+/* print the entire list */
 void print_list(struct song_node *n) {
-  while(n->next) {
-    printf("%s: %s | \n",n->next->artist,n->next->name);
+  while(n) {
+    printf("%s: %s | \n",n->artist,n->name);
     n = n->next;
   }
 }
- /* print a node */
+
+/* print a node */
 void print_node(struct song_node *n) {
   if(n != NULL)
     printf("%s: %s\n",n->artist,n->name);
 }
- /* insert nodes at the front */
+
+/* insert nodes at the front */
 struct song_node *insert_front(char name[100], char artist[100], struct song_node *n) {
   struct song_node *p = malloc(sizeof(struct song_node));
   strcpy(p->name,name);
@@ -29,7 +31,8 @@ struct song_node *insert_front(char name[100], char artist[100], struct song_nod
   p->next = n;
   return p;
 }
- /* insert nodes in order */
+
+/* insert nodes in order */
 /* alphabetical by Artist then by Song */
 struct song_node *insert_order(char name[100], char artist[100], struct song_node *n) {
   struct song_node *p = malloc(sizeof(struct song_node));
@@ -39,7 +42,8 @@ struct song_node *insert_order(char name[100], char artist[100], struct song_nod
     p->next = n;
     return p;
   }
-   struct song_node *c = n;
+
+  struct song_node *c = n;
   while(c->next != NULL && strcmp(p->artist, c->next->artist) > 0)
       c = c->next;
   if(strcmp(n->artist,p->artist))
@@ -49,7 +53,8 @@ struct song_node *insert_order(char name[100], char artist[100], struct song_nod
   c->next = p;
   return n;
 }
- /* find and return a pointer to a node based on artist and song name */
+
+/* find and return a pointer to a node based on artist and song name */
 struct song_node *find_node(char *name, char *artist, struct song_node *n) {
   while(n != NULL) {
     if(strcmp(artist, n->artist) == 0 && strcmp(name, n->name) == 0)
@@ -58,13 +63,15 @@ struct song_node *find_node(char *name, char *artist, struct song_node *n) {
   }
   return n;
 }
- /* find and return a pointer to the first song of an artist based on artist name */
+
+/* find and return a pointer to the first song of an artist based on artist name */
 struct song_node *find_artist(char *artist, struct song_node *n) {
   while(n != NULL && strcmp(artist, n->artist) != 0)
     n= n->next;
   return n;
 }
- /* compares how far apart they are in the list */
+
+/* compares how far apart they are in the list */
 int songcmp(char *nameA, char *artistA, char *nameB, char *artistB, struct song_node *n) {
   int a;
   int b;
@@ -79,9 +86,13 @@ int songcmp(char *nameA, char *artistA, char *nameB, char *artistB, struct song_
   }
   return 4 * (a - b);
 }
- /* Return a pointer to random element in the list. */
+
+/* Return a pointer to random element in the list. */
 struct song_node *random_node(struct song_node *n) {
   struct song_node *s = n;
+  if (s == NULL){
+    return NULL;
+  }
   int size = 0;
   while(s != NULL) {
     s = s->next;
@@ -95,7 +106,8 @@ struct song_node *random_node(struct song_node *n) {
   }
   return n;
 }
- /* remove a single specified node from the list */
+
+/* remove a single specified node from the list */
 struct song_node *remove_node(char *name, char *artist, struct song_node *n) {
   if(strcmp(artist, n->artist) == 0 && strcmp(name, n->name) == 0) {
     struct song_node *new = malloc(sizeof(struct song_node));
@@ -116,7 +128,8 @@ struct song_node *remove_node(char *name, char *artist, struct song_node *n) {
   printf("%s: %s not found\n", artist, name);
   return n;
 }
- /* free the entire list */
+
+/* free the entire list */
 struct song_node *free_list(struct song_node *n) {
   struct song_node *temp;
   while(n) {
@@ -126,61 +139,91 @@ struct song_node *free_list(struct song_node *n) {
   }
   return n;
 }
- struct song_node *table[27];
- void setup() {
-  int i = 0;
-  while(i != 27) {
-    table[i] = malloc(sizeof(struct song_node));
-    i++;
-  }
-}
- void add(char song[100], char artist[100]) {
+
+
+
+
+
+
+
+
+// our music library
+struct song_node *table[27];
+
+
+// adds a song to our table in alphabetical order
+void add(char song[100], char artist[100]) {
   char letter = artist[0];
   int i = (int) (letter - 'a');
-  if (i < 27)
+  if (table[i] == NULL){
+    table[i] = malloc(sizeof(struct song_node));
+  }
+  if (i >= 0 && i < 27)
     insert_order(song, artist, table[i]);
   else
     insert_order(song, artist, table[26]);
 }
- // returns pointer to a song by a certain artist
+
+
+
+// returns pointer to a song by a certain artist
 struct song_node *searchS(char song[100], char artist[100]) {
   char letter = artist[0];
   int i = (int)(letter - 'a');
-   printf("looking for [%s: %s]\n", artist, song);
-   if (find_node(song, artist, table[i]) != NULL){
+
+  printf("looking for [%s: %s]\n", artist, song);
+
+  if (find_node(song, artist, table[i]) != NULL){
     printf("song found! %s: %s\n", artist, song);
   }
   else{
     printf("song not found!\n");
   }
-   return find_node(song, artist, table[i]);
+
+  return find_node(song, artist, table[i]);
 }
- // returns pointer to a certain artist
+
+
+
+
+// returns pointer to a certain artist
 struct song_node *searchA(char artist[100]) {
   char letter = artist[0];
   int i = (int)(letter - 'a');
+  struct song_node *n = table[i];
   
   printf("looking for [%s]\n", artist);
-   if (find_artist(artist, table[i]) != NULL){
-    printf("artist found! \n");
-    
+
+  if (find_artist(artist, n) != NULL){
+    printf("artist found!");
+    while (n != NULL){
+      if (strcmp(n->artist, artist) == 0)
+	printf(" %s : %s  | \n", n->artist, n->name);
+      n = n -> next;
+    }
   }
   else{
-    printf("artist not found!\n");
+    printf("artist not found!");
   }
+  printf("\n");
   return find_artist(artist, table[i]);
 }
- //print all artists starting with a letter as well as their corresponding song
+
+
+
+
+//print all artists starting with a letter as well as their corresponding song
 void print_letters(char letter) {
   int i = (int)(letter - 'a');
   if (i < 27){
-    print_list(table[i]);
+    print_list(table[i]->next);
   }
   else{
-    print_list(table[26]);
+    print_list(table[26]->next);
   }
 }
- //prints all the songs by an author
+
+//prints all the songs by an author
 void print_songs(char artist[100]) {
   char letter = artist[0];
   int i = (int)(letter - 'a');
@@ -192,43 +235,63 @@ void print_songs(char artist[100]) {
     n = n->next;
   }
 }
- /* print all items in  table */
+
+
+
+/* print all items in  table */
 void print_all() {
+  printf("\nMusic library:\n");
   int i = 0;
   while (i <= 26) {
-    if(table[i] != NULL)
-      print_list(table[i]);
+    if (table[i] != NULL)
+      print_list(table[i]->next);
     i++;
   }
+  printf("\n");
 }
- void print_shuffle() {
-   int no = rand() %60;
-  while(no != 0) {
-    int le = rand() %27;
-    while(table[le]->artist == NULL) {
-      print_list(table[le]);
-      le = rand() %27;
+
+/* prints a random sequence of songs of random length */
+void print_shuffle() {
+  printf("\nrandom shuffle:\n");
+  int var = rand() % 15 + 3;
+  int i;
+  struct song_node *n;
+
+  while(var > 0) {
+    i = rand() % 27;
+    n = random_node(table[i]);
+    
+    if (n != NULL) {
+      print_node(n->next);
+      var--;
     }
-    printf("%d",le);
-    struct song_node *n = table[le];
-    n = random_node(n);
-    print_node(n);
-    no--;
+
   }
 }
- void remove_song(char song[100], char artist[100]) {
+
+// removes a song from our music library
+void remove_song(char song[100], char artist[100]) {
   char letter = artist[0];
   int i = (int)(letter - 'a');
   remove_node(song, artist, table[i]);
+  printf("Removed %s: %s \n", artist, song);
 }
+
+// clears the entire library
 void clear_library() {
   int i = 0;
+  struct song_node *temp;
   for(i; i < 27; i++) {
-    struct song_node *temp;
+    temp = table[i];
+    while (temp != NULL && temp->next != NULL){
+      temp = temp->next;
+      printf("freeing node: %s - %s\n", temp->artist, temp->name);
+    }
     table[i] = free_list(table[i]);
-    //printf("%p", table[i]);
   }
 }
+
+
 int main() {
   srand(time(NULL));
  printf("MUSIC LIBRARY TESTS\n");
