@@ -7,13 +7,6 @@
 #define "library.h"
 #endif
 
-
-#ifndef "list.h"
-#define "list.h"
-#endif
-
-
-
 int main() {
   srand(time(NULL));
   printf("LINKED LIST TESTS\n");

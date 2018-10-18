@@ -1,8 +1,8 @@
-all: ./tuneTest run
+all: ./tuneTest
 
 ./tuneTest: list.c library.c main.c
-	gcc  -o tuneTest list.c library.c main.c -g
+	gcc -o list.c library.c main.c
 run:
-	valgrind ./tuneTest
+	./a.out
 clean:
-	rm -f tuneTest list.o library.o main.o *~
+	rm -f a.out list.o library.o main.o *~
