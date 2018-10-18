@@ -195,11 +195,11 @@ struct song_node *searchA(char artist[100]) {
   printf("looking for [%s]\n", artist);
 
   if (find_artist(artist, n) != NULL){
-    printf("artist found!");
-    while (n != NULL){
+    printf("artist found!\n");
+    while (n->next != NULL){
+       n = n -> next;
       if (strcmp(n->artist, artist) == 0)
 	printf(" %s : %s  | \n", n->artist, n->name);
-      n = n -> next;
     }
   }
   else{
