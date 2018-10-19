@@ -7,7 +7,7 @@
 /* print the entire list */
 void print_list(struct song_node *n) {
   while(n) {
-    printf("%s: %s | ",n->artist,n->name);
+    printf("%s: %s |\n",n->artist,n->name);
     n = n->next;
   }
 }
@@ -84,8 +84,10 @@ int songcmp(char *nameA, char *artistA, char *nameB, char *artistB, struct song_
 
 /* Return a pointer to random element in the list. */
 struct song_node *random_node(struct song_node *n) {
-  struct song_node *s = malloc(sizeof(struct song_node));
-  s = n;
+  struct song_node *s = n;
+  if (s == NULL){
+    return NULL;
+  }
   int size = 0;
   while(s != NULL) {
     s = s->next;

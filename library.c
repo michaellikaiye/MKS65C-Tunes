@@ -5,6 +5,7 @@
 #include "list.h"
 #include "library.h"
 
+
 // our music library
 struct song_node *table[27];
 
@@ -16,10 +17,12 @@ void add(char song[100], char artist[100]) {
   if (table[i] == NULL){
     table[i] = malloc(sizeof(struct song_node));
   }
-  if (i >= 0 && i < 27)
+  if (i >= 0 && i < 27){
     insert_order(song, artist, table[i]);
-  else
+  }
+  else{
     insert_order(song, artist, table[26]);
+  }
 }
 
 
@@ -53,11 +56,11 @@ struct song_node *searchA(char artist[100]) {
   printf("looking for [%s]\n", artist);
 
   if (find_artist(artist, n) != NULL){
-    printf("artist found!");
-    while (n != NULL){
+    printf("artist found!\n");
+    while (n->next != NULL){
+       n = n -> next;
       if (strcmp(n->artist, artist) == 0)
 	printf(" %s : %s  | \n", n->artist, n->name);
-      n = n -> next;
     }
   }
   else{
@@ -94,7 +97,7 @@ void print_songs(char artist[100]) {
   }
 }
 
-
+  
 
 /* print all items in  table */
 void print_all() {
@@ -142,9 +145,9 @@ void clear_library() {
   for(i; i < 27; i++) {
     temp = table[i];
     while (temp != NULL && temp->next != NULL){
+       printf("freeing node: %s - %s\n", temp->next->artist, temp->next->name); 
       temp = temp->next;
-      printf("freeing node: %s - %s\n", temp->artist, temp->name);
-    }
+    } 
     table[i] = free_list(table[i]);
   }
 }

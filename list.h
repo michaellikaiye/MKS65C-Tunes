@@ -1,4 +1,5 @@
-/* list.h */
+#ifndef LIST_H
+#define LIST_H
 
 struct song_node { 
   char name[100];
@@ -38,3 +39,5 @@ struct song_node *remove_node(char *name, char *artist, struct song_node *n);
 
 /* free the entire list */
 struct song_node *free_list(struct song_node *n);
+
+#endif

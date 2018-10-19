@@ -1,3 +1,6 @@
+#ifndef LIB_H
+#define LIB_H
+
 struct song_node *table[27];
 
 /* Sets up table with null values */
@@ -28,4 +31,6 @@ void print_shuffle();
 void remove_song(char song[100], char artist[100]);
 
 /* Clear the library. */
-void clear();
+void clear_library();
+
+#endif

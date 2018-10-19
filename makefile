@@ -1,7 +1,14 @@
-all: ./tuneTest
+all: list.o main.o library.o
+	gcc list.o main.o library.o
 
-./tuneTest: list.c library.c main.c
-	gcc -o list.c library.c main.c
+library.o: library.c library.h list.h
+	gcc -c library.c
+
+list.o: list.c list.h
+	gcc -c list.c
+
+main.o: main.c list.h library.h
+	gcc -c main.c
 run:
 	./a.out
 clean:
